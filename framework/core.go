@@ -46,7 +46,7 @@ func (c *Core) Get(url string, handler ControllerHandler) {
 func (c *Core) Post(url string, handler ControllerHandler) {
 	//upperUrl := strings.ToUpper(url)
 	//c.router["POST"][upperUrl] = handler
-	if err := c.router["Post"].AddRouter(url, handler); err != nil {
+	if err := c.router["POST"].AddRouter(url, handler); err != nil {
 		log.Fatal("add router error: ", err)
 	}
 }
@@ -55,7 +55,7 @@ func (c *Core) Post(url string, handler ControllerHandler) {
 func (c *Core) Put(url string, handler ControllerHandler) {
 	//upperUrl := strings.ToUpper(url)
 	//c.router["Put"][upperUrl] = handler
-	if err := c.router["Put"].AddRouter(url, handler); err != nil {
+	if err := c.router["PUT"].AddRouter(url, handler); err != nil {
 		log.Fatal("add router error: ", err)
 	}
 }
@@ -64,9 +64,13 @@ func (c *Core) Put(url string, handler ControllerHandler) {
 func (c *Core) Delete(url string, handler ControllerHandler) {
 	//upperUrl := strings.ToUpper(url)
 	//c.router["DELETE"][upperUrl] = handler
-	if err := c.router["Delete"].AddRouter(url, handler); err != nil {
+	if err := c.router["DELETE"].AddRouter(url, handler); err != nil {
 		log.Fatal("add router error: ", err)
 	}
+}
+
+func (c *Core) Group(prefix string) IGroup {
+	return NewGroup(c, prefix)
 }
 
 // FindRouteByRequest 匹配路由
