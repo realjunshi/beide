@@ -16,7 +16,10 @@ type Context struct {
 	request        *http.Request
 	responseWriter http.ResponseWriter
 	ctx            context.Context
-	handler        ControllerHandler
+	// 当前请求的handler链条
+	//handler        ControllerHandler
+	handlers []ControllerHandler
+	index    int
 
 	// 是否超时标记位
 	hasTimeout bool
@@ -24,12 +27,30 @@ type Context struct {
 	writerMux *sync.Mutex
 }
 
+// Next 控制链条的逐步调用
+func (ctx *Context) Next() error {
+	ctx.index++
+	if ctx.index < len(ctx.handlers) {
+		if err := ctx.handlers[ctx.index](ctx); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// SetHandlers 为context设置handlers
+func (ctx *Context) SetHandlers(handlers []ControllerHandler) {
+	ctx.handlers = handlers
+}
+
+// NewContext 初始值应该是-1，每次调用都会自增1，保证第一次调用的时候index为0
 func NewContext(r *http.Request, w http.ResponseWriter) *Context {
 	return &Context{
 		request:        r,
 		responseWriter: w,
 		ctx:            r.Context(),
 		writerMux:      &sync.Mutex{},
+		index:          -1,
 	}
 }
 
