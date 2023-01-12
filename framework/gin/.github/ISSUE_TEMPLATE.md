@@ -14,7 +14,7 @@
 package main
 
 import (
-	"github.com/gohade/bede/framework/gin"
+	"github.com/realjunshi/beide/framework/gin"
 )
 
 func main() {

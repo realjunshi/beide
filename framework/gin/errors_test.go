@@ -9,7 +9,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/gohade/bede/framework/gin/internal/json"
+	"github.com/realjunshi/beide/framework/gin/internal/json"
 	"github.com/stretchr/testify/assert"
 )
 

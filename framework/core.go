@@ -90,10 +90,8 @@ func (c *Core) ServeHTTP(response http.ResponseWriter, request *http.Request) {
 	handlers := c.FindRouteByRequest(request)
 	if handlers == nil {
 		// 如果没有找到，这里打印日志
-		err := ctx.Json(404, "not found")
-		if err != nil {
-			return
-		}
+		ctx.SetStatus(404).Json("not found")
+		return
 	}
 
 	// 设置context中的handlers字段
@@ -101,10 +99,9 @@ func (c *Core) ServeHTTP(response http.ResponseWriter, request *http.Request) {
 
 	// 调用路由函数，如果返回err代表存在内部错误，返回500状态码
 	if err := ctx.Next(); err != nil {
-		err := ctx.Json(500, "inner error")
-		if err != nil {
-			return
-		}
+		ctx.SetStatus(500).Json("inner error")
+
+		return
 	}
 	log.Println("core.router")
 }

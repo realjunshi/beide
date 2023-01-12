@@ -24,8 +24,8 @@ import (
 	"time"
 
 	"github.com/gin-contrib/sse"
-	"github.com/gohade/bede/framework/gin/binding"
-	testdata "github.com/gohade/bede/framework/gin/testdata/protoexample"
+	"github.com/realjunshi/beide/framework/gin/binding"
+	testdata "github.com/realjunshi/beide/framework/gin/testdata/protoexample"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/protobuf/proto"
 )
@@ -340,7 +340,7 @@ func TestContextHandlerName(t *testing.T) {
 	c, _ := CreateTestContext(httptest.NewRecorder())
 	c.handlers = HandlersChain{func(c *Context) {}, handlerNameTest}
 
-	assert.Regexp(t, "^(.*/vendor/)?github.com/gohade/bede/framework/gin.handlerNameTest$", c.HandlerName())
+	assert.Regexp(t, "^(.*/vendor/)?github.com/realjunshi/beide/framework/gin.handlerNameTest$", c.HandlerName())
 }
 
 func TestContextHandlerNames(t *testing.T) {
