@@ -1,4 +1,4 @@
-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
+// Copyright 2014 Manu Martinez-Almeida.  All rights reserved.
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file.
 
@@ -20,8 +20,8 @@ import (
 	"time"
 
 	"github.com/realjunshi/beide/framework/gin/testdata/protoexample"
+	"github.com/golang/protobuf/proto"
 	"github.com/stretchr/testify/assert"
-	"google.golang.org/protobuf/proto"
 )
 
 type appkey struct {
@@ -61,11 +61,11 @@ type FooDefaultBarStruct struct {
 }
 
 type FooStructUseNumber struct {
-	Foo any `json:"foo" binding:"required"`
+	Foo interface{} `json:"foo" binding:"required"`
 }
 
 type FooStructDisallowUnknownFields struct {
-	Foo any `json:"foo" binding:"required"`
+	Foo interface{} `json:"foo" binding:"required"`
 }
 
 type FooBarStructForTimeType struct {
@@ -93,7 +93,7 @@ type FooStructForTimeTypeFailLocation struct {
 }
 
 type FooStructForMapType struct {
-	MapFoo map[string]any `form:"map_foo"`
+	MapFoo map[string]interface{} `form:"map_foo"`
 }
 
 type FooStructForIgnoreFormTag struct {
@@ -106,7 +106,7 @@ type InvalidNameType struct {
 
 type InvalidNameMapType struct {
 	TestName struct {
-		MapFoo map[string]any `form:"map_foo"`
+		MapFoo map[string]interface{} `form:"map_foo"`
 	}
 }
 
@@ -128,7 +128,7 @@ type FooStructForStructPointerType struct {
 
 type FooStructForSliceMapType struct {
 	// Unknown type: not support map
-	SliceMapFoo []map[string]any `form:"slice_map_foo"`
+	SliceMapFoo []map[string]interface{} `form:"slice_map_foo"`
 }
 
 type FooStructForBoolType struct {
@@ -141,7 +141,7 @@ type FooStructForStringPtrType struct {
 }
 
 type FooStructForMapPtrType struct {
-	PtrBar *map[string]any `form:"ptr_bar"`
+	PtrBar *map[string]interface{} `form:"ptr_bar"`
 }
 
 func TestBindingDefault(t *testing.T) {
@@ -165,9 +165,6 @@ func TestBindingDefault(t *testing.T) {
 
 	assert.Equal(t, YAML, Default("POST", MIMEYAML))
 	assert.Equal(t, YAML, Default("PUT", MIMEYAML))
-
-	assert.Equal(t, TOML, Default("POST", MIMETOML))
-	assert.Equal(t, TOML, Default("PUT", MIMETOML))
 }
 
 func TestBindingJSONNilBody(t *testing.T) {
@@ -455,20 +452,6 @@ func TestBindingXMLFail(t *testing.T) {
 		XML, "xml",
 		"/", "/",
 		"<map><foo>bar<foo></map>", "<map><bar>foo</bar></map>")
-}
-
-func TestBindingTOML(t *testing.T) {
-	testBodyBinding(t,
-		TOML, "toml",
-		"/", "/",
-		`foo="bar"`, `bar="foo"`)
-}
-
-func TestBindingTOMLFail(t *testing.T) {
-	testBodyBindingFail(t,
-		TOML, "toml",
-		"/", "/",
-		`foo=\n"bar"`, `bar="foo"`)
 }
 
 func TestBindingYAML(t *testing.T) {
@@ -785,7 +768,7 @@ func TestHeaderBinding(t *testing.T) {
 	req.Header.Add("fail", `{fail:fail}`)
 
 	type failStruct struct {
-		Fail map[string]any `header:"fail"`
+		Fail map[string]interface{} `header:"fail"`
 	}
 
 	err := h.Bind(req, &failStruct{})
@@ -806,11 +789,11 @@ func TestUriBinding(t *testing.T) {
 	assert.Equal(t, "thinkerou", tag.Name)
 
 	type NotSupportStruct struct {
-		Name map[string]any `uri:"name"`
+		Name map[string]interface{} `uri:"name"`
 	}
 	var not NotSupportStruct
 	assert.Error(t, b.BindUri(m, &not))
-	assert.Equal(t, map[string]any(nil), not.Name)
+	assert.Equal(t, map[string]interface{}(nil), not.Name)
 }
 
 func TestUriInnerBinding(t *testing.T) {
@@ -849,6 +832,7 @@ func testFormBindingEmbeddedStruct(t *testing.T, method, path, badPath, body, ba
 	assert.Equal(t, 1, obj.Page)
 	assert.Equal(t, 2, obj.Size)
 	assert.Equal(t, "test-appkey", obj.Appkey)
+
 }
 
 func testFormBinding(t *testing.T, method, path, badPath, body, badBody string) {
@@ -1355,13 +1339,6 @@ func testProtoBodyBindingFail(t *testing.T, b Binding, name, path, badPath, body
 	req.Header.Add("Content-Type", MIMEPROTOBUF)
 	err := b.Bind(req, &obj)
 	assert.Error(t, err)
-
-	invalidobj := FooStruct{}
-	req.Body = ioutil.NopCloser(strings.NewReader(`{"msg":"hello"}`))
-	req.Header.Add("Content-Type", MIMEPROTOBUF)
-	err = b.Bind(req, &invalidobj)
-	assert.Error(t, err)
-	assert.Equal(t, err.Error(), "obj is not ProtoMessage")
 
 	obj = protoexample.Test{}
 	req = requestWithBody("POST", badPath, badBody)

@@ -18,9 +18,9 @@ func TestMappingBaseTypes(t *testing.T) {
 	}
 	for _, tt := range []struct {
 		name   string
-		value  any
+		value  interface{}
 		form   string
-		expect any
+		expect interface{}
 	}{
 		{"base type", struct{ F int }{}, "9", int(9)},
 		{"base type", struct{ F int8 }{}, "9", int8(9)},
@@ -131,7 +131,7 @@ func TestMappingURI(t *testing.T) {
 	var s struct {
 		F int `uri:"field"`
 	}
-	err := mapURI(&s, map[string][]string{"field": {"6"}})
+	err := mapUri(&s, map[string][]string{"field": {"6"}})
 	assert.NoError(t, err)
 	assert.Equal(t, int(6), s.F)
 }
@@ -141,15 +141,6 @@ func TestMappingForm(t *testing.T) {
 		F int `form:"field"`
 	}
 	err := mapForm(&s, map[string][]string{"field": {"6"}})
-	assert.NoError(t, err)
-	assert.Equal(t, int(6), s.F)
-}
-
-func TestMapFormWithTag(t *testing.T) {
-	var s struct {
-		F int `externalTag:"field"`
-	}
-	err := MapFormWithTag(&s, map[string][]string{"field": {"6"}}, "externalTag")
 	assert.NoError(t, err)
 	assert.Equal(t, int(6), s.F)
 }

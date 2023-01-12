@@ -1,4 +1,4 @@
-// Copyright 2014 Manu Martinez-Almeida. All rights reserved.
+// Copyright 2014 Manu Martinez-Almeida.  All rights reserved.
 // Use of this source code is governed by a MIT style
 // license that can be found in the LICENSE file.
 
@@ -21,7 +21,7 @@ import (
 
 func TestRenderMsgPack(t *testing.T) {
 	w := httptest.NewRecorder()
-	data := map[string]any{
+	data := map[string]interface{}{
 		"foo": "bar",
 	}
 
@@ -39,6 +39,6 @@ func TestRenderMsgPack(t *testing.T) {
 	err = codec.NewEncoder(buf, h).Encode(data)
 
 	assert.NoError(t, err)
-	assert.Equal(t, w.Body.String(), buf.String())
+	assert.Equal(t, w.Body.String(), string(buf.Bytes()))
 	assert.Equal(t, "application/msgpack; charset=utf-8", w.Header().Get("Content-Type"))
 }
