@@ -11,7 +11,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/realjunshi/beide/framework/gin/internal/bytesconv"
+	"beide/framework/gin/internal/bytesconv"
 )
 
 var (

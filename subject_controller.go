@@ -1,33 +1,37 @@
 package main
 
-import "beide/framework"
+import (
+	"beide/framework/gin"
+	"beide/framework/provider/demo"
+	"fmt"
+)
 
-func SubjectAddController(c *framework.Context) error {
-	c.Json(200, "ok SubjectAddController")
-	return nil
+func SubjectAddController(c *gin.Context) {
+	c.ISetOkStatus().IJson("ok, SubjectAddController")
 }
 
-func SubjectListController(c *framework.Context) error {
-	c.Json(200, "ok, SubjectListController")
-	return nil
+func SubjectListController(c *gin.Context) {
+	// 获取 demo 服务实例
+	demoService := c.MustMake(demo.Key).(demo.Service)
+	foo := demoService.GetFoo()
+
+	c.ISetOkStatus().IJson(foo)
 }
 
-func SubjectDelController(c *framework.Context) error {
-	c.Json(200, "ok, SubjectDelController")
-	return nil
+func SubjectDelController(c *gin.Context) {
+	c.ISetOkStatus().IJson("ok, SubjectDelController")
 }
 
-func SubjectUpdateController(c *framework.Context) error {
-	c.Json(200, "ok, SubjectUpdateController")
-	return nil
+func SubjectUpdateController(c *gin.Context) {
+	c.ISetOkStatus().IJson("ok, SubjectUpdateController")
 }
 
-func SubjectGetController(c *framework.Context) error {
-	c.Json(200, "ok, SubjectGetController")
-	return nil
+func SubjectGetController(c *gin.Context) {
+	subjectId, _ := c.DefaultParamInt("id", 0)
+	c.ISetOkStatus().IJson("ok, SubjectGetController:" + fmt.Sprint(subjectId))
+
 }
 
-func SubjectNameController(c *framework.Context) error {
-	c.Json(200, "ok, SubjectNameController")
-	return nil
+func SubjectNameController(c *gin.Context) {
+	c.ISetOkStatus().IJson("ok, SubjectNameController")
 }
