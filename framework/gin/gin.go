@@ -151,7 +151,7 @@ var _ IRouter = &Engine{}
 func New() *Engine {
 	debugPrintWARNINGNew()
 	engine := &Engine{
-		container: framework.NewHadeContainer(),
+		container: framework.NewBeideContainer(),
 		RouterGroup: RouterGroup{
 			Handlers: nil,
 			basePath: "/",

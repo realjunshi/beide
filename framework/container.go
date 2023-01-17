@@ -36,8 +36,8 @@ type BeideContainer struct {
 	lock *sync.RWMutex
 }
 
-// NewHadeContainer 创建一个服务容器
-func NewHadeContainer() *BeideContainer {
+// NewBeideContainer 创建一个服务容器
+func NewBeideContainer() *BeideContainer {
 	return &BeideContainer{
 		providers: map[string]ServiceProvider{},
 		instances: map[string]interface{}{},
@@ -59,11 +59,14 @@ func (beide *BeideContainer) PrintProviders() []string {
 
 // Bind 将服务容器和关键字做了绑定
 func (beide *BeideContainer) Bind(provider ServiceProvider) error {
-	beide.lock.Lock()
-	defer beide.lock.Unlock()
+	//beide.lock.Lock()
+	//defer beide.lock.Unlock()
 	key := provider.Name()
 
+	//log.Println("provider name:", key)
+	//log.Println("provider.IsDefer() :", provider.IsDefer())
 	beide.providers[key] = provider
+	//beide.PrintProviders()
 
 	// if provider is not defer
 	if provider.IsDefer() == false {
