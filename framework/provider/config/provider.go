@@ -3,6 +3,7 @@ package config
 import (
 	"beide/framework"
 	"beide/framework/contract"
+	"log"
 	"path/filepath"
 )
 
@@ -10,7 +11,7 @@ type HadeConfigProvider struct{}
 
 // Register registe a new function for make a service instance
 func (provider *HadeConfigProvider) Register(c framework.Container) framework.NewInstance {
-	//log.Println("config Register", 123)
+	log.Println("config Register", 123)
 	return NewHadeConfig
 }
 

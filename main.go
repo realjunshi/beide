@@ -8,7 +8,10 @@ import (
 	"beide/framework/provider/config"
 	"beide/framework/provider/distributed"
 	"beide/framework/provider/env"
+	"beide/framework/provider/id"
 	"beide/framework/provider/kernel"
+	"beide/framework/provider/log"
+	"beide/framework/provider/trace"
 )
 
 //func main() {
@@ -70,6 +73,9 @@ func main() {
 	// 为什么无法走到register
 	container.Bind(&config.HadeConfigProvider{})
 	container.Bind(&distributed.LocalDistributedProvider{})
+	container.Bind(&id.HadeIDProvider{})
+	container.Bind(&trace.HadeTraceProvider{})
+	container.Bind(&log.HadeLogServiceProvider{})
 
 	// 将HTTP引擎初始化,并且作为服务提供者绑定到服务容器中
 	if engine, err := http.NewHttpEngine(); err == nil {

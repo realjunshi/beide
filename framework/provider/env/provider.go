@@ -12,7 +12,7 @@ type HadeEnvProvider struct {
 
 // Register registe a new function for make a service instance
 func (provider *HadeEnvProvider) Register(c framework.Container) framework.NewInstance {
-	//log.Println("Register HadeEnvProvider:", 1234567)
+	log.Println("Register HadeEnvProvider:", 1234567)
 	return NewHadeEnv
 }
 

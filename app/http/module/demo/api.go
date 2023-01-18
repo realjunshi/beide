@@ -24,6 +24,13 @@ func (a DemoApi) Demo(c *gin.Context) {
 	//password := configService.IsExist(contract.ConfigKey)
 	//log.Println(r)
 	password := configService.GetString("database.mysql.password") // 打印出来
+
+	logger := c.MustMakeLog()
+	logger.Info(c, "demo test error", map[string]interface{}{
+		"api":  "demo/demo",
+		"user": "jianfengye",
+	})
+
 	c.JSON(200, password)
 }
 

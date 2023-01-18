@@ -2,6 +2,7 @@ package demo
 
 import (
 	"beide/framework"
+	"log"
 )
 
 type DemoProvider struct {
@@ -15,6 +16,7 @@ func (sp *DemoProvider) Name() string {
 }
 
 func (sp *DemoProvider) Register(c framework.Container) framework.NewInstance {
+	log.Println("demo Register:", 1234)
 	return NewService
 }
 
