@@ -1,13 +1,12 @@
 package static
 
 import (
-	"log"
-	"net/http"
-	"os"
-	"path"
-	"strings"
+  "net/http"
+  "os"
+  "path"
+  "strings"
 
-	"beide/framework/gin"
+  "beide/framework/gin"
 )
 
 const INDEX = "index.html"
@@ -24,7 +23,7 @@ type localFileSystem struct {
 }
 
 func LocalFile(root string, indexes bool) *localFileSystem {
-	log.Println("LocalFile:", 1234)
+	//log.Println("LocalFile:", 1234)
 	return &localFileSystem{
 		FileSystem: gin.Dir(root, indexes),
 		root:       root,

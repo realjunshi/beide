@@ -2,7 +2,6 @@ package demo
 
 import (
 	"beide/app/provider/demo"
-	"beide/framework/contract"
 	"beide/framework/gin"
 )
 
@@ -20,18 +19,18 @@ func (a DemoApi) Demo(c *gin.Context) {
 	////c.JSON(200, usersDTO)
 	//c.JSON(200, baseFolder)
 
-	configService := c.MustMake(contract.ConfigKey).(contract.Config)
+	//configService := c.MustMake(contract.ConfigKey).(contract.Config)
 	//password := configService.IsExist(contract.ConfigKey)
 	//log.Println(r)
-	password := configService.GetString("database.mysql.password") // 打印出来
+	//password := configService.GetString("database.mysql.password") // 打印出来
 
 	logger := c.MustMakeLog()
-	logger.Info(c, "demo test error", map[string]interface{}{
+	logger.Info(c, "demo 454dsf", map[string]interface{}{
 		"api":  "demo/demo",
-		"user": "jianfengye",
+		"user": "jianglong",
 	})
 
-	c.JSON(200, password)
+	c.JSON(200, "该这里呢，能成功吗")
 }
 
 func NewDemoApi() *DemoApi {
