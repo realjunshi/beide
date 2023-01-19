@@ -163,3 +163,13 @@ func (beide *BeideContainer) make(key string, params []interface{}, forceNew boo
 	beide.instances[key] = inst
 	return inst, nil
 }
+
+// NameList 列出容器中所有服务提供者的字符串凭证
+func (beide *BeideContainer) NameList() []string {
+	ret := []string{}
+	for _, provider := range beide.providers {
+		name := provider.Name()
+		ret = append(ret, name)
+	}
+	return ret
+}

@@ -4,6 +4,7 @@ import (
 	"beide/framework"
 	"beide/framework/util"
 	"errors"
+	"flag"
 	"github.com/google/uuid"
 	"path/filepath"
 )
@@ -59,14 +60,14 @@ func (beide BeideApp) HttpFolder() string {
 	if val, ok := beide.configMap["http_folder"]; ok {
 		return val
 	}
-	return filepath.Join(beide.BaseFolder(), "http")
+	return filepath.Join(beide.BaseFolder()+"/app", "http")
 }
 
 func (beide BeideApp) ConsoleFolder() string {
 	if val, ok := beide.configMap["console_folder"]; ok {
 		return val
 	}
-	return filepath.Join(beide.BaseFolder(), "console")
+	return filepath.Join(beide.BaseFolder()+"/app", "console")
 }
 
 func (beide BeideApp) StorageFolder() string {
@@ -81,7 +82,7 @@ func (beide BeideApp) ProviderFolder() string {
 	if val, ok := beide.configMap["provider_folder"]; ok {
 		return val
 	}
-	return filepath.Join(beide.BaseFolder(), "provider")
+	return filepath.Join(beide.BaseFolder()+"/app", "provider")
 }
 
 // MiddlewareFolder 定义业务自己定义的中间件
@@ -124,6 +125,12 @@ func NewBeideApp(params ...interface{}) (interface{}, error) {
 	// 有两个参数，一个是容器，一个是baseFolder
 	container := params[0].(framework.Container)
 	baseFolder := params[1].(string)
+
+	// 如果没有设置，则使用参数
+	if baseFolder == "" {
+		flag.StringVar(&baseFolder, "base_folder", "/Users/changba-os/code/gocode/beide", "base_folder参数, 默认为当前路径")
+		flag.Parse()
+	}
 
 	appId := uuid.New().String()
 	configMap := map[string]string{}
