@@ -21,7 +21,7 @@ func AddKernelCommands(root *cobra.Command) {
 	//buildCommand.AddCommand(buildBackendCommand)
 	//buildCommand.AddCommand(buildFrontendCommand)
 	//buildCommand.AddCommand(buildAllCommand)
-	//root.AddCommand(buildCommand)
+	root.AddCommand(buildCommand)
 	//
 	//// app
 	root.AddCommand(initAppCommand())
